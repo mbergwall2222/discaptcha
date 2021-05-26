@@ -98,7 +98,10 @@ Client.on('guildMemberAdd', (GuildMember) => {
   try {
     verifyMember(GuildMember, roleName)
       .then((msg) => p(msg))
-      .catch((err) => lp(err));
+      .catch((err) => {
+        lp(err)
+        GuildMember.kick();
+      });
   } catch (err) {
     lp(err);
   }
