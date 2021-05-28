@@ -99,6 +99,7 @@ Client.on('message', (Message) => {
  */
 Client.on('guildMemberAdd', (GuildMember) => {
   try {
+    if(GuildMember.user.bot) return;
     verifyMember(GuildMember, roleName)
       .then((msg) => p(msg))
       .catch((err) => {
