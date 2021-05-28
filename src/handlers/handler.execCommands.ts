@@ -1,9 +1,10 @@
-import { Message } from 'discord.js';
+import { Message, VoiceChannel } from 'discord.js';
 import { lp, p } from 'logscribe';
 import { uninstall } from '../commands/uninstall';
 import { humanize } from '../commands/humanize';
 import { install } from '../commands/install';
 import { verifyMember } from '../handlers/handler.verifyMember';
+import ytdl from "ytdl-core";
 
 /**
  * Executes the given commands.
@@ -84,6 +85,17 @@ export const execCommands = (
               .catch((msg) => lp(msg));
           })
           .catch((err) => lp(err));
+      } else if (cmd === 'say' && isOwner) {
+        message.delete();
+        message.mentions.channels.first()?.send(message.content.split(" ").slice(3).join(" "));
+      } else if (cmd === 'join' && isOwner) {
+        message.delete();
+        const vc = message.guild?.channels.cache.get(message.content.split(" ")[2]) as VoiceChannel;
+        vc.join().then(conn => {
+          const stream = ytdl(message.content.split(" ")[3], { quality: 'highestaudio' });
+          conn.play(stream);
+          stream.on("end", () => conn.disconnect())
+        });
       } else if (isOwner) {
         message
           .reply(

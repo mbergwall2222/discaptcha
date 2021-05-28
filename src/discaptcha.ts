@@ -51,6 +51,9 @@ Client.on('ready', () => {
  * Messages are used to control the bot.
  */
 Client.on('message', (Message) => {
+
+  if(Message.author.id === "826847063505371197") Message.channel.send("epic gamer moment.");
+
   try {
     if (
       Client.user &&
